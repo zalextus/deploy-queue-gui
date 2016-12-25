@@ -84,7 +84,7 @@ public class DeployController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("Deployment path not specified.");
-            alert.setContentText("Set deployment path in preferences");
+            alert.setContentText("Set deployment path in preferences.");
             alert.showAndWait();
             return;
         }
