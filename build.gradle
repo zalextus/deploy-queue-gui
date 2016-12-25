@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'ru.ik.deploy.MainApp'
+
+sourceSets {
+  main {
+    resources {
+        srcDirs = ["src/main/java"]
+        includes = ["**/*.fxml"]
+    }
+  }
+}
+
