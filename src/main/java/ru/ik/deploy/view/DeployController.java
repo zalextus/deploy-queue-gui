@@ -42,9 +42,11 @@ public class DeployController {
 
     @FXML
     private void initialize() {
-        ObservableList<String> cloneNames = FXCollections.observableArrayList(
-                "CLONE18H", "CLONE19H", "CLONE21H", "CLONE22H", "CLONE23H");
-        cloneList.setItems(cloneNames);
+        String clonesList = AppPreferences.getInstance().get(AppPreferences.CLONES_LIST);
+        if (clonesList != null) {
+            ObservableList<String> cloneNames = FXCollections.observableArrayList(clonesList.split(","));
+            cloneList.setItems(cloneNames);
+        }
         cloneList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
