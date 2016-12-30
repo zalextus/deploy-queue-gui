@@ -103,14 +103,14 @@ public class DeployController {
 
     private String getPatchList(String[] patchListArray) {
         StringBuilder sb = new StringBuilder();
-        Pattern p = Pattern.compile(".*(trunk/.*sh).*");
+        Pattern p = Pattern.compile(".*((HOTFIX[^\\/]*|PRODUCT[^\\/]*)/.*sh).*");
         for (String patch : patchListArray) {
             Matcher m = p.matcher(patch.replace('\\', '/'));
             if (m.matches()) {
                 if (sb.length() > 0) {
                     sb.append(",");
                 }
-                sb.append(m.group(1));
+                sb.append("trunk/" + m.group(1));
             }
         }
         return sb.toString();
