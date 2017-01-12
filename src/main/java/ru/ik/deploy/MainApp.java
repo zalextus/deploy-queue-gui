@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import ru.ik.deploy.view.DeployController;
 
 public class MainApp extends Application {
 
@@ -54,6 +55,8 @@ public class MainApp extends Application {
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set deploy pane into the center of root layout.
+            DeployController controller = loader.getController();
+            AppPreferences.getInstance().addObserver(controller);
             rootLayout.setCenter(personOverview);
         } catch (IOException e) {
             e.printStackTrace();

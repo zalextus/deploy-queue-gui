@@ -10,18 +10,17 @@ import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.scene.control.SelectionMode;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import javafx.scene.control.Alert;
 import ru.ik.deploy.AppPreferences;
+import ru.ik.deploy.DeployFileGenerator;
 
-public class DeployController {
+public class DeployController implements Observer {
 
     @FXML
     private TextArea patchList;
@@ -39,9 +38,15 @@ public class DeployController {
     private TextArea deployFileContent;
     @FXML
     private TextField deployFileName;
+    @FXML
+    private CheckBox skipUsePatchPath;
 
     @FXML
     private void initialize() {
+        initializeClonesList();
+    }
+
+    private void initializeClonesList() {
         String clonesList = AppPreferences.getInstance().get(AppPreferences.CLONES_LIST);
         if (clonesList != null) {
             ObservableList<String> cloneNames = FXCollections.observableArrayList(clonesList.split(","));
@@ -52,31 +57,19 @@ public class DeployController {
 
     @FXML
     private void handleGenerateDeployData() {
-        String[] patchListArray = patchList.getText().split("\n");
-        String deployFileNameText = "task_" + getOEBSList(patchListArray) + "_" + getCurrentDateFormatted();
-        deployFileName.setText(deployFileNameText);
-
-        StringBuilder sb = new StringBuilder("[patch_deploy]\n");
-        boolean usePatchPath = getUsePatchPath(patchListArray);
-        if (usePatchPath) {
-            sb.append("use_patch_path = True\n");
-        }
-        sb.append("installorder = ").append(getPatchList(patchListArray));
-        if (needAdcgnjar.isSelected()) {
-            sb.append(",adcgnjar");
-        }
-        if (needOacorerestart.isSelected()) {
-            sb.append(",oacorereload");
-        }
-        sb.append("\n");
-        String cloneListStr = getCloneList();
-        sb.append("installto = ").append(cloneListStr).append("\n");
-        sb.append("single_patch_install_timeout = 1000\n");
-        sb.append("patch_deploy_description = '").append(deployFileNameText).append(" ").append(cloneListStr).append("'\n");
+        DeployFileGenerator generator = new DeployFileGenerator();
+        generator.setPatchList(patchList.getText().split("\n"));
+        generator.setSkipUsePatchPath(skipUsePatchPath.isSelected());
+        generator.setNeedAdcgnjar(needAdcgnjar.isSelected());
+        generator.setNeedOacoreRestart(needOacorerestart.isSelected());
+        generator.setCloneList(getCloneList());
+        generator.setSinglePatchInstallTimeout(1000);
         String username = System.getProperty("user.name");
-        sb.append("email_cc = ").append(username).append("@yandex-team.ru\n");
-        sb.append("genuine_commiter = ").append(username).append("\n");
-        deployFileContent.setText(sb.toString());
+        generator.setEmailCC(username.concat("@").concat(AppPreferences.getInstance().get(AppPreferences.DOMAIN_NAME)));
+        generator.setGenuineCommiter(username);
+        generator.generate();
+        deployFileName.setText(generator.getDeployFileName());
+        deployFileContent.setText(generator.getDeployFileContent());
     }
 
     @FXML
@@ -101,21 +94,6 @@ public class DeployController {
         Desktop.getDesktop().open(new File(deployPath));
     }
 
-    private String getPatchList(String[] patchListArray) {
-        StringBuilder sb = new StringBuilder();
-        Pattern p = Pattern.compile(".*((HOTFIX[^\\/]*|PRODUCT[^\\/]*)/.*sh).*");
-        for (String patch : patchListArray) {
-            Matcher m = p.matcher(patch.replace('\\', '/'));
-            if (m.matches()) {
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append("trunk/" + m.group(1));
-            }
-        }
-        return sb.toString();
-    }
-
     private String getCloneList() {
         ObservableList<String> selectedItems = cloneList.getSelectionModel().getSelectedItems();
         StringBuilder sb = new StringBuilder();
@@ -128,36 +106,9 @@ public class DeployController {
         return sb.toString();
     }
 
-    private boolean getUsePatchPath(String[] patchListArray) {
-        for (String patch : patchListArray) {
-            if (patch.contains("PRODUCT")) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private String getOEBSList(String[] patchListArray) {
-        StringBuilder sb = new StringBuilder();
-        Pattern p = Pattern.compile(".*(OEBS-\\d+).*");
-
-        for (String patch : patchListArray) {
-            Matcher m = p.matcher(patch);
-            if (m.matches()) {
-                if (sb.length() > 0) {
-                    sb.append("_");
-                }
-                sb.append(m.group(1));
-            }
-        }
-
-        return sb.toString();
-    }
-
-    private String getCurrentDateFormatted() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmmss");
-        return dateFormat.format(new Date());
+    @Override
+    public void update(Observable o, Object arg) {
+        initializeClonesList();
     }
 
 }

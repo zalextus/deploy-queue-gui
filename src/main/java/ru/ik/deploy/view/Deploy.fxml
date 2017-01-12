@@ -10,7 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.ik.deploy.view.DeployController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.ik.deploy.view.DeployController">
    <children>
       <SplitPane dividerPositions="0.5" layoutX="55.0" layoutY="40.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -27,6 +27,7 @@
                       <Button fx:id="generateDeployData" mnemonicParsing="false" onAction="#handleGenerateDeployData" text="Generate deploy data" />
                     </buttons>
                   </ButtonBar>
+                  <CheckBox fx:id="skipUsePatchPath" layoutX="237.0" layoutY="216.0" mnemonicParsing="false" selected="true" text="Skip &quot;use_patch_path = True&quot;" AnchorPane.bottomAnchor="70.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

@@ -9,12 +9,14 @@ public class AppPreferencesController {
 
   @FXML private TextField deployFileDestination;
   @FXML private TextField clonesList;
+  @FXML private TextField domainName;
 
   @FXML
   private void handleOkButton() {
     AppPreferences pref = AppPreferences.getInstance();
     pref.put(AppPreferences.DEPLOY_PATH, deployFileDestination.getText());
     pref.put(AppPreferences.CLONES_LIST, clonesList.getText());
+    pref.put(AppPreferences.DOMAIN_NAME, domainName.getText());
     pref.save();
     Stage stage = (Stage)deployFileDestination.getScene().getWindow();
     stage.close();
@@ -31,6 +33,7 @@ public class AppPreferencesController {
     AppPreferences pref = AppPreferences.getInstance();
     deployFileDestination.setText(pref.get(AppPreferences.DEPLOY_PATH));
     clonesList.setText(pref.get(AppPreferences.CLONES_LIST));
+    domainName.setText(pref.get(AppPreferences.DOMAIN_NAME));
   }
 
 }
