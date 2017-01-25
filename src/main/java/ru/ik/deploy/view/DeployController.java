@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.scene.control.Alert;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import ru.ik.deploy.AppPreferences;
 import ru.ik.deploy.DeployFileGenerator;
 
@@ -109,6 +112,60 @@ public class DeployController implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         initializeClonesList();
+    }
+    
+    @FXML
+    public void handlePatchListDragOver(DragEvent event) {
+          /* data is dragged over the target */
+          /* accept it only if it is not dragged from the same node 
+           * and if it has a string data */
+          if (event.getGestureSource() != patchList &&
+                  event.getDragboard().hasFiles()) {
+              /* allow for moving */
+              event.acceptTransferModes(TransferMode.ANY);
+          }
+          
+          event.consume();
+      }
+    
+    @FXML
+    public void handlePatchListDragEntered(DragEvent event) {
+        /* the drag-and-drop gesture entered the target */
+        /* show to the user that it is an actual gesture target */
+        if (event.getGestureSource() != patchList
+                && event.getDragboard().hasFiles()) {
+        }
+
+        event.consume();
+    }
+    
+    @FXML
+    public void handlePatchListDragExited(DragEvent event) {
+          /* mouse moved away, remove the graphical cues */
+          event.consume();
+      }
+    
+    @FXML
+    public void handlePatchListDragDropped(DragEvent event) throws IOException {
+        System.out.println("drag dropped");
+        /* data dropped */
+        /* if there is a string data on dragboard, read it and use it */
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasFiles()) {
+            for (File f : db.getFiles()) {
+                if (patchList.getLength() > 0) {
+                    patchList.appendText("\n");
+                }
+                patchList.appendText(f.getCanonicalPath());
+            }
+            success = true;
+        }
+        /* let the source know whether the string was successfully 
+         * transferred and used */
+        event.setDropCompleted(success);
+
+        event.consume();
     }
 
 }

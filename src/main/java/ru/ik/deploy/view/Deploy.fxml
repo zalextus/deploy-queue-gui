@@ -17,7 +17,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="List of patches (one per line):" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                  <TextArea fx:id="patchList" layoutX="199.0" layoutY="61.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0" />
+                  <TextArea fx:id="patchList" layoutX="199.0" layoutY="61.0" onDragDropped="#handlePatchListDragDropped" onDragEntered="#handlePatchListDragEntered" onDragExited="#handlePatchListDragExited" onDragOver="#handlePatchListDragOver" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0" />
                   <ListView fx:id="cloneList" layoutX="10.0" layoutY="153.0" prefHeight="125.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                   <Label layoutX="10.0" layoutY="146.0" text="Clones:" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="10.0" />
                   <CheckBox fx:id="needAdcgnjar" layoutX="237.0" layoutY="175.0" mnemonicParsing="false" text="Need adcgnjar" AnchorPane.bottomAnchor="120.0" />
