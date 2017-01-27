@@ -22,6 +22,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import ru.ik.deploy.AppPreferences;
 import ru.ik.deploy.DeployFileGenerator;
+import javafx.scene.control.SplitMenuButton;
 
 public class DeployController implements Observer {
 
@@ -43,6 +44,8 @@ public class DeployController implements Observer {
     private TextField deployFileName;
     @FXML
     private CheckBox skipUsePatchPath;
+    @FXML
+    private SplitMenuButton addToSvn;            
 
     @FXML
     private void initialize() {
@@ -60,6 +63,16 @@ public class DeployController implements Observer {
 
     @FXML
     private void handleGenerateDeployData() {
+        String domainName = AppPreferences.getInstance().get(AppPreferences.DOMAIN_NAME);
+        if (domainName == null || domainName.trim().length() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Domain name (for email) not specified in preferences.");
+            alert.setContentText("Specify domain name (for email) in preferences.");
+            alert.showAndWait();
+            return;
+        }        
+        
         DeployFileGenerator generator = new DeployFileGenerator();
         generator.setPatchList(patchList.getText().split("\n"));
         generator.setSkipUsePatchPath(skipUsePatchPath.isSelected());
@@ -74,9 +87,68 @@ public class DeployController implements Observer {
         deployFileName.setText(generator.getDeployFileName());
         deployFileContent.setText(generator.getDeployFileContent());
     }
+    
+    @FXML
+    private void handleCommitToSvn() throws IOException, InterruptedException {
+        handleAddToSvn();
+        String svnExePath = AppPreferences.getInstance().get(AppPreferences.SVN_EXE_PATH);
+        Runtime runtime = Runtime.getRuntime();
+        String deployPath = AppPreferences.getInstance().get(AppPreferences.DEPLOY_PATH);
+        String filename = deployFileName.getText();
+        Process process = runtime.exec(new String[] {svnExePath, "ci", filename, filename}, 
+                null, 
+                new File(deployPath));
+        int exitValue = process.waitFor();
+        if (exitValue != 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Svn add failed.");
+            alert.setContentText("Failed to add to svn.");
+            alert.showAndWait();
+        }
+    }
+    
+    @FXML
+    private void handleAddToSvn() throws IOException, InterruptedException {
+        String svnExePath = AppPreferences.getInstance().get(AppPreferences.SVN_EXE_PATH);
+        if (svnExePath == null || svnExePath.trim().length() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Path to svn executable not given in preferences.");
+            alert.setContentText("Specify path to svn executable in preferences.");
+            alert.showAndWait();
+            return;
+        }   
+        handleDeployToInstallQueue();
+        Runtime runtime = Runtime.getRuntime();
+        String deployPath = AppPreferences.getInstance().get(AppPreferences.DEPLOY_PATH);
+        Process process = runtime.exec(
+                new String[] {svnExePath, "add", deployFileName.getText()}, 
+                null, 
+                new File(deployPath));
+        int exitValue = process.waitFor();
+        if (exitValue != 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Svn add failed.");
+            alert.setContentText("Failed to add to svn.");
+            alert.showAndWait();
+        }
+    }
 
     @FXML
     private void handleDeployToInstallQueue() throws IOException {
+        String filename = deployFileName.getText();
+        if (filename == null || filename.trim().length() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Filename missing.");
+            alert.setContentText("Supply filename.");
+            alert.showAndWait();
+            deployFileName.requestFocus();
+            return;
+        }        
+        
         String deployPath = AppPreferences.getInstance().get(AppPreferences.DEPLOY_PATH);
         if (deployPath == null || deployPath.trim().length() == 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -86,10 +158,11 @@ public class DeployController implements Observer {
             alert.showAndWait();
             return;
         }
+        
         if (!deployPath.endsWith("/") && !deployPath.endsWith("\\")) {
             deployPath += File.separator;
         }
-        String path = deployPath + deployFileName.getText();
+        String path = deployPath + filename;
         try (BufferedWriter w = new BufferedWriter(new FileWriter(path))) {
             w.write(deployFileContent.getText());
             w.flush();

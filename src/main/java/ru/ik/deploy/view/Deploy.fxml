@@ -5,6 +5,8 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -32,9 +34,14 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <ButtonBar layoutX="384.0" layoutY="242.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                  <ButtonBar layoutX="384.0" layoutY="242.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                     <buttons>
                       <Button fx:id="deployToInstallQueue" mnemonicParsing="false" onAction="#handleDeployToInstallQueue" text="Deploy to install queue" />
+                        <SplitMenuButton fx:id="addToSvn" mnemonicParsing="false" onAction="#handleAddToSvn" text="Deploy &amp; add to svn">
+                          <items>
+                            <MenuItem fx:id="commitToSvn" mnemonicParsing="false" onAction="#handleCommitToSvn" text="Deploy &amp; commit to svn" />
+                          </items>
+                        </SplitMenuButton>
                     </buttons>
                   </ButtonBar>
                   <TextArea fx:id="deployFileContent" layoutX="167.0" layoutY="-27.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="55.0" />

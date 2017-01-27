@@ -9,6 +9,7 @@ public class AppPreferences extends Observable {
   public final static String DEPLOY_PATH = "DeployPath";
   public final static String CLONES_LIST = "ClonesList";
   public final static String DOMAIN_NAME = "DomainName";
+  public final static String SVN_EXE_PATH = "SvnExePath";
 
   private static AppPreferences instance;
 
@@ -30,6 +31,7 @@ public class AppPreferences extends Observable {
     preferencesStorage.put(DEPLOY_PATH, prefs.get(DEPLOY_PATH, null));
     preferencesStorage.put(CLONES_LIST, prefs.get(CLONES_LIST, null));
     preferencesStorage.put(DOMAIN_NAME, prefs.get(DOMAIN_NAME, null));
+    preferencesStorage.put(SVN_EXE_PATH, prefs.get(SVN_EXE_PATH, null));
   }
 
   public void save() {
@@ -37,6 +39,7 @@ public class AppPreferences extends Observable {
     prefs.put(DEPLOY_PATH, (String)preferencesStorage.get(DEPLOY_PATH));
     prefs.put(CLONES_LIST, (String)preferencesStorage.get(CLONES_LIST));
     prefs.put(DOMAIN_NAME, (String)preferencesStorage.get(DOMAIN_NAME));
+    prefs.put(SVN_EXE_PATH, (String)preferencesStorage.get(SVN_EXE_PATH));
     setChanged();
     notifyObservers();
   }
