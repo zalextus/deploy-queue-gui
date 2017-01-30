@@ -60,7 +60,7 @@ public class DeployFileGenerator {
 
     public void generate() {
         String deployFileNameText = "task_" + getOEBSList(patchList) + "_" + getCurrentDateFormatted();
-        deployFileName = deployFileNameText.length() > 255 ? deployFileNameText.substring(1, 256) : deployFileNameText;
+        deployFileName = deployFileNameText.length() > 255 ? deployFileNameText.substring(0, 255) : deployFileNameText;
 
         StringBuilder sb = new StringBuilder("[patch_deploy]\n");
         boolean usePatchPath = getUsePatchPath(patchList);

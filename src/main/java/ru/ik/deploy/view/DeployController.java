@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -85,7 +87,26 @@ public class DeployController implements Observer {
         generator.setEmailCC(username.concat("@").concat(AppPreferences.getInstance().get(AppPreferences.DOMAIN_NAME)));
         generator.setGenuineCommiter(username);
         generator.generate();
-        deployFileName.setText(generator.getDeployFileName());
+        String filename = generator.getDeployFileName();
+        // Validate filename and possibly truncate
+        String deployPath = AppPreferences.getInstance().get(AppPreferences.DEPLOY_PATH);
+        if (!deployPath.endsWith("/") && !deployPath.endsWith("\\")) {
+            deployPath += File.separator;
+        }
+        String path = deployPath + filename;
+        int length = path.length();
+        if (length > 255) {
+            int maxFilenameLength = 255 - deployPath.length();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Full path exceeds 255 characters.");
+            alert.setContentText("Truncate filename to \"" + filename.substring(0, maxFilenameLength) + "\"?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                filename = filename.substring(0, maxFilenameLength);
+            }
+        }
+        deployFileName.setText(filename);
         deployFileContent.setText(generator.getDeployFileContent());
     }
     
