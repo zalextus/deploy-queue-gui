@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.scene.control.Alert;
@@ -94,16 +95,16 @@ public class DeployController implements Observer {
         String svnExePath = AppPreferences.getInstance().get(AppPreferences.SVN_EXE_PATH);
         Runtime runtime = Runtime.getRuntime();
         String deployPath = AppPreferences.getInstance().get(AppPreferences.DEPLOY_PATH);
-        String filename = deployFileName.getText();
-        Process process = runtime.exec(new String[] {svnExePath, "ci", filename, filename}, 
+        String filename = deployFileName.getText(); 
+        Process process = runtime.exec(new String[] {svnExePath, "ci", "-m", "\"" + filename + "\"", "--force-log", filename}, 
                 null, 
                 new File(deployPath));
         int exitValue = process.waitFor();
         if (exitValue != 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
-            alert.setHeaderText("Svn add failed.");
-            alert.setContentText("Failed to add to svn.");
+            alert.setHeaderText("Svn commit failed.");
+            alert.setContentText("Failed to commit to svn.");
             alert.showAndWait();
         }
     }
