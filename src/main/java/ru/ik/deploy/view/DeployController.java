@@ -48,7 +48,15 @@ public class DeployController implements Observer {
     @FXML
     private CheckBox skipUsePatchPath;
     @FXML
-    private SplitMenuButton addToSvn;            
+    private SplitMenuButton addToSvn;
+    @FXML
+    private CheckBox needAdutlrcmp;
+    @FXML
+    private CheckBox needWfStop;
+    @FXML
+    private CheckBox needWfStart;
+    @FXML
+    private CheckBox needWfRestart;
 
     @FXML
     private void initialize() {
@@ -81,6 +89,12 @@ public class DeployController implements Observer {
         generator.setSkipUsePatchPath(skipUsePatchPath.isSelected());
         generator.setNeedAdcgnjar(needAdcgnjar.isSelected());
         generator.setNeedOacoreRestart(needOacorerestart.isSelected());
+        
+        generator.setNeedAdutlrcmp(needAdutlrcmp.isSelected());
+        generator.setNeedWfStop(needWfStop.isSelected());
+        generator.setNeedWfStart(needWfStart.isSelected());
+        generator.setNeedWfRestart(needWfRestart.isSelected());
+        
         generator.setCloneList(getCloneList());
         generator.setSinglePatchInstallTimeout(1000);
         String username = System.getProperty("user.name");

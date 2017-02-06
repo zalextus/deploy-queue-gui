@@ -27,7 +27,7 @@ public class RootLayoutController {
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("About");
     alert.setHeaderText("Deploy queue GUI");
-    alert.setContentText("alexzaikin, 2016");
+    alert.setContentText("alexzaikin, 2016-2017");
 
     alert.showAndWait();
   }

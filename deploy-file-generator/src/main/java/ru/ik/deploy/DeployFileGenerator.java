@@ -17,6 +17,10 @@ public class DeployFileGenerator {
     private String genuineCommiter;
     private String deployFileName;
     private String deployFileContent;
+    private boolean needAdutlrcmp;
+    private boolean needWfStop;
+    private boolean needWfStart;
+    private boolean needWfRestart;
 
     public void setPatchList(String[] patchList) {
         this.patchList = patchList;
@@ -68,12 +72,32 @@ public class DeployFileGenerator {
             sb.append("use_patch_path = True\n");
         }
         sb.append("installorder = ").append(getPatchList(patchList));
+        StringBuilder installOrder = new StringBuilder();
+        if (needWfStop) {
+            installOrder.append(",wf-stop");
+        }
         if (needAdcgnjar) {
-            sb.append(",adcgnjar");
+            installOrder.append(",adcgnjar");
         }
         if (needOacoreRestart) {
-            sb.append(",oacorereload");
+            installOrder.append(",oacorereload");
         }
+        if (needAdutlrcmp) {
+            installOrder.append(",adutlrcmp");
+        }
+        if (needWfRestart) {
+            installOrder.append(",wf-restart");
+        }
+        if (needWfStart) {
+            installOrder.append(",wf-start");
+        }
+        
+        if (installOrder.length() > 0 && installOrder.charAt(0) == ',') {
+            sb.append(installOrder.substring(1));
+        } else {
+            sb.append(installOrder);
+        }
+        
         sb.append("\n");
         String cloneListStr = cloneList;
         sb.append("installto = ").append(cloneListStr).append("\n");
@@ -133,6 +157,38 @@ public class DeployFileGenerator {
             }
         }
         return sb.toString();
+    }
+
+    public void setNeedAdutlrcmp(boolean needAdutlrcmp) {
+        this.needAdutlrcmp = needAdutlrcmp;
+    }
+
+    public void setNeedWfStop(boolean needWfStop) {
+        this.needWfStop = needWfStop;
+    }
+
+    public void setNeedWfStart(boolean needWfStart) {
+        this.needWfStart = needWfStart;
+    }
+
+    public void setNeedWfRestart(boolean needWfRestart) {
+        this.needWfRestart = needWfRestart;
+    }
+
+    public boolean isNeedAdutlrcmp() {
+        return needAdutlrcmp;
+    }
+
+    public boolean isNeedWfStop() {
+        return needWfStop;
+    }
+
+    public boolean isNeedWfStart() {
+        return needWfStart;
+    }
+
+    public boolean isNeedWfRestart() {
+        return needWfRestart;
     }
     
 }

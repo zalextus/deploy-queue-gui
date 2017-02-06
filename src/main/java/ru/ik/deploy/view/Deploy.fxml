@@ -22,14 +22,18 @@
                   <TextArea fx:id="patchList" layoutX="199.0" layoutY="61.0" onDragDropped="#handlePatchListDragDropped" onDragEntered="#handlePatchListDragEntered" onDragExited="#handlePatchListDragExited" onDragOver="#handlePatchListDragOver" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0" />
                   <ListView fx:id="cloneList" layoutX="10.0" layoutY="153.0" prefHeight="125.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                   <Label layoutX="10.0" layoutY="146.0" text="Clones:" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="10.0" />
-                  <CheckBox fx:id="needAdcgnjar" layoutX="237.0" layoutY="175.0" mnemonicParsing="false" text="Need adcgnjar" AnchorPane.bottomAnchor="120.0" />
-                  <CheckBox fx:id="needOacorerestart" layoutX="237.0" layoutY="197.0" mnemonicParsing="false" text="Need oacorerestart" AnchorPane.bottomAnchor="95.0" />
+                  <CheckBox fx:id="needAdcgnjar" layoutX="237.0" layoutY="175.0" mnemonicParsing="false" text="adcgnjar" AnchorPane.bottomAnchor="120.0" />
+                  <CheckBox fx:id="needOacorerestart" layoutX="237.0" layoutY="197.0" mnemonicParsing="false" text="oacorerestart" AnchorPane.bottomAnchor="95.0" />
                   <ButtonBar layoutX="384.0" layoutY="191.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
                     <buttons>
                       <Button fx:id="generateDeployData" mnemonicParsing="false" onAction="#handleGenerateDeployData" text="Generate deploy data" />
                     </buttons>
                   </ButtonBar>
-                  <CheckBox fx:id="skipUsePatchPath" layoutX="237.0" layoutY="216.0" mnemonicParsing="false" selected="true" text="Skip &quot;use_patch_path = True&quot;" AnchorPane.bottomAnchor="70.0" />
+                  <CheckBox fx:id="skipUsePatchPath" layoutX="520.0" layoutY="160.0" mnemonicParsing="false" selected="true" text="Skip &quot;use_patch_path = True&quot;" AnchorPane.bottomAnchor="120.0" />
+                  <CheckBox fx:id="needWfStop" layoutX="349.0" layoutY="160.0" mnemonicParsing="false" text="wf-stop" AnchorPane.bottomAnchor="120.0" />
+                  <CheckBox fx:id="needWfStart" layoutX="349.0" layoutY="185.0" mnemonicParsing="false" text="wf-start" AnchorPane.bottomAnchor="95.0" />
+                  <CheckBox fx:id="needWfRestart" layoutX="349.0" layoutY="208.0" mnemonicParsing="false" text="wf-restart" AnchorPane.bottomAnchor="70.0" />
+                  <CheckBox fx:id="needAdutlrcmp" layoutX="237.0" layoutY="208.0" mnemonicParsing="false" text="adutlrcmp" AnchorPane.bottomAnchor="70.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
