@@ -92,11 +92,11 @@ public class DeployFileGenerator {
             installOrder.append(",wf-start");
         }
         
-        if (installOrder.length() > 0 && installOrder.charAt(0) == ',') {
-            sb.append(installOrder.substring(1));
-        } else {
+        //if (installOrder.length() > 0 && installOrder.charAt(0) == ',') {
+        //    sb.append(installOrder.substring(1));
+        //} else {
             sb.append(installOrder);
-        }
+        //}
         
         sb.append("\n");
         String cloneListStr = cloneList;
