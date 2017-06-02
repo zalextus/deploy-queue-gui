@@ -1,16 +1,10 @@
 package ru.ik.deploy.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.*;
-import javafx.scene.control.*;
 import javafx.stage.*;
-import ru.ik.deploy.AppPreferences;
 import java.io.IOException;
 import javafx.scene.layout.*;
 import javafx.fxml.*;
