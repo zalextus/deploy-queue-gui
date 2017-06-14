@@ -30,6 +30,7 @@ public class AppPreferencesController {
     stage.close();
   }
 
+  @FXML
   private void initialize() {
     AppPreferences pref = AppPreferences.getInstance();
     deployFileDestination.setText(pref.get(AppPreferences.DEPLOY_PATH));
